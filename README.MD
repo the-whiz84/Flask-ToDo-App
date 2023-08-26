@@ -51,15 +51,6 @@ One of the biggest challenges of creating this app was writing html and css code
 For example, I initially used HTML tables to display the list of tasks, but I couldn't get it to display the way I wanted. I found a work-around by using containers and divs. Here's what an earlier draft looked like: 
 ![Earlier Version of the App](images/first-version-of-my-to-do-app.png)
 
-## Contributing
-I welcome contributions from the community. If you'd like to contribute, please follow these steps:
-1. Fork the repository.
-2. Create a new branch: `git checkout -b feature-new-feature`
-3. Make your changes and commit them: `git commit -m 'Add new feature'`
-4. Push to the branch: `git push origin feature-new-feature`
-5. Open a pull request.
-
-
 ## Contact Information
 I welcome any feedback from the community and you're welcome to fork the repository for your own project. 
 You can reach me at [roman.pk@yahoo.com](mailto:roman.pk@yahoo.com).

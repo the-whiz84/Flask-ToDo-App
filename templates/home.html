@@ -1,0 +1,144 @@
+{% include "header.html" %}
+<!-- Page Header -->
+<header class="masthead"
+    style="background-image: url('../static/assets/img/edit-bg.jpg')">
+
+    <body class="bg-dark">
+        <div class="container py-5 h-100">
+            <div
+                class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-md-12 col-xl-10">
+                    <div class="card mask-custom">
+                        <div class="card-body p-4 text-white">
+                            <div class="text-center pt-3 pb-2">
+                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-todo-list/check1.webp"
+                                    alt="Check" width="60">
+                                <h2 class="my-4">{{ username }}'s To-Do List
+                                </h2>
+                            </div>
+                            <table class="table text-white mb-0">
+                                <thead>
+                                    <tr>
+                                        <th scope="col"
+                                            class="text-header-custom">Task</th>
+                                        <th scope="col"
+                                            class="text-header-custom">Due
+                                            Status</th>
+                                        <th scope="col"
+                                            class="text-header-custom">Actions
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for todo in todos %}
+                                    <tr
+                                        class="fw-normal {% if todo.status == 'complete' %}text-muted{% endif %}">
+                                        <td
+                                            class="align-middle text-white-custom">
+                                            <span {% if todo.status=='complete'
+                                                %}style="text-decoration: line-through;"
+                                                {% endif %}>{{ todo.task
+                                                }}</span>
+                                        </td>
+                                        <td
+                                            class="align-middle text-white-custom">
+                                            <h6 class="mb-0">
+                                                {% if todo.status == 'complete'
+                                                %}
+                                                <span
+                                                    class="badge bg-success">Completed</span>
+                                                {% else %}
+                                                {% if todo.due_status.lower() ==
+                                                'on time' %}
+                                                <span
+                                                    class="badge bg-primary">{{
+                                                    todo.due_status }}</span>
+                                                {% elif todo.due_status.lower()
+                                                == 'past due' %}
+                                                <span class="badge bg-danger">{{
+                                                    todo.due_status }}</span>
+                                                {% elif todo.due_status.lower()
+                                                == 'due today' %}
+                                                <span
+                                                    class="badge bg-warning">{{
+                                                    todo.due_status }}</span>
+                                                {% else %}
+                                                <span
+                                                    class="badge bg-secondary">Unknown</span>
+                                                {% endif %}
+                                                {% endif %}
+                                            </h6>
+                                        </td>
+                                        <td
+                                            class="align-middle text-white-custom">
+                                            <form action="/update_todo/"
+                                                method="POST"
+                                                style="display:inline;">
+                                                <input type="hidden"
+                                                    name="task_id"
+                                                    value="{{ todo.id }}">
+                                                <button type="submit"
+                                                    name="update_todo"
+                                                    value="complete"
+                                                    class="btn btn-link p-0 m-0">
+                                                    <i
+                                                        class="fas fa-check fa-lg text-success me-3"></i>
+                                                </button>
+                                            </form>
+                                            <form action="/update_todo/"
+                                                method="POST"
+                                                style="display:inline;">
+                                                <input type="hidden"
+                                                    name="task_id"
+                                                    value="{{ todo.id }}">
+                                                <button type="submit"
+                                                    name="update_todo"
+                                                    value="delete"
+                                                    class="btn btn-link p-0 m-0">
+                                                    <i
+                                                        class="fas fa-trash-alt fa-lg text-warning"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            <hr
+                                style="height:2px; width:100%; border-width:0; color:grey; background-color:grey">
+                            <div class="pb-5">
+                                <form action='/add_task' method="POST">
+                                    <div class="form-row">
+                                        <div class="col">
+                                            <input class="form-control"
+                                                name="task"
+                                                placeholder="Enter new task here ..."
+                                                type="text">
+                                        </div>
+                                        <div class="col-1 text-center">
+                                            <span
+                                                class="badge badge-primary">Due
+                                                Date</span>
+                                        </div>
+                                        <div class="col-auto">
+                                            <input class="form-control"
+                                                name="due_date" required
+                                                type="date">
+                                        </div>
+                                        <div class="col-1">
+                                            <button
+                                                class="btn btn-sm btn-primary btn-block text-nowrap"
+                                                name="add_todo" type="submit"
+                                                value="add">Add Task</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+    {% include "footer.html" %}

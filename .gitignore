@@ -1,0 +1,29 @@
+# General
+.venv
+.git/
+venv/
+.vercel
+*.log
+*.pyc
+__pycache__
+.env
+.db
+# VsCode Specific
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+
+# Local History for Visual Studio Code
+.history/
+
+# MacOs Specific
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*

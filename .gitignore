@@ -7,7 +7,7 @@ venv/
 *.pyc
 __pycache__
 .env
-.db
+*.db
 # VsCode Specific
 .vscode/*
 !.vscode/settings.json

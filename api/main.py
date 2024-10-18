@@ -16,6 +16,8 @@ from sqlalchemy import Integer, String, DateTime, func
 from werkzeug.security import generate_password_hash, check_password_hash
 from forms import RegisterForm, LoginForm
 
+SQLALCHEMY_DATABASE_URI = os.getenv("POSTGRES_URL")
+
 
 def due_status(due_date):
     today = date.today()
@@ -29,7 +31,7 @@ def due_status(due_date):
 
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = os.getenv("FLASK_SECRET_KEY")
+app.config["SECRET_KEY"] = os.urandom(24)
 bootstrap = Bootstrap5(app)
 
 login_manager = LoginManager()
@@ -46,7 +48,7 @@ class Base(DeclarativeBase):
     pass
 
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///todo.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = f"{SQLALCHEMY_DATABASE_URI}, sqlite:///todo.db"
 db = SQLAlchemy(model_class=Base)
 db.init_app(app)
 

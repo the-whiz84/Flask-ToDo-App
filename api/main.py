@@ -14,7 +14,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship, DeclarativeBase, Mapped, mapped_column
 from sqlalchemy import Integer, String, DateTime, func
 from werkzeug.security import generate_password_hash, check_password_hash
-from forms import RegisterForm, LoginForm
+from api.forms import RegisterForm, LoginForm
 
 SQLALCHEMY_DATABASE_URI = os.getenv("POSTGRES_URL")
 

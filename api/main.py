@@ -1,4 +1,4 @@
-import os
+import os, psycopg2
 from datetime import date, datetime
 from flask import Flask, render_template, redirect, url_for, flash, request
 from flask_bootstrap import Bootstrap5
@@ -16,7 +16,7 @@ from sqlalchemy import Integer, String, DateTime, func
 from werkzeug.security import generate_password_hash, check_password_hash
 from api.forms import RegisterForm, LoginForm
 
-SQLALCHEMY_DATABASE_URI = os.getenv("POSTGRES_URL")
+SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URI")
 
 
 def due_status(due_date):

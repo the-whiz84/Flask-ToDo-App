@@ -11,10 +11,7 @@ Current functionality only allows user to edit tasks in a single master to do li
 - [Features](#features)
 - [Future Improvements](#future-improvements)
 - [Technologies Used](#technologies-used)
-- [Challenges Faced](#challenges-faced)
-- [Contact Information](#contact-information)
-- [Acknowledgments](#acknowledgments)
-- [Links](#links)
+- [Live Demo](#live-demo)
 
 
 ## Usage
@@ -31,13 +28,6 @@ Current functionality only allows user to edit tasks in a single master to do li
 - Mark tasks as completed (which will also apply a strikethorugh and a `Completed` badge).
 - Delete tasks that you no longer want and they will be removed from the page and database.
 
-## Future Improvements
-After I tackle a few other projects, I'd consider enhancing the app in the future, including:
-- Give user ability to sort to-dos by name, due status, or due date.
-- Give user ability to create different lists with to do tasks.
-- Give user ability to move tasks between lists.
-- Implementing task categorization and filtering.
-
 ## Technologies Used
 - Python
 - Flask
@@ -46,20 +36,5 @@ After I tackle a few other projects, I'd consider enhancing the app in the futur
 - WTForms
 - Bootstrap5 (CSS Framework)
 
-## Challenges Faced
-One of the biggest challenges of creating this app was writing html and css code. I'm also not very familiar with bootstrap framework so it took a lot of experimenting and debugging to get the app going. 
-
-For example, I initially used HTML tables to display the list of tasks, but I couldn't get it to display the way I wanted. I found a work-around by using containers and divs. Here's what an earlier draft looked like: 
-![Earlier Version of the App](images/first-version-of-my-to-do-app.png)
-
-## Contact Information
-I welcome any feedback from the community and you're welcome to fork the repository for your own project. 
-You can reach me at [roman.pk@yahoo.com](mailto:roman.pk@yahoo.com).
-
-## Acknowledgments
-- [Bootstrap](https://getbootstrap.com) - CSS framework for styling.
-- [Pandas](https://pandas.pydata.org) - Used for data manipulation.
-
-## Links
-- Live Demo - TBA 
-- [GitHub Repository](https://github.com/roman-pk/To-Do-App-Python-Flask)
+## Live Demo
+Website can be viewed and tested on <a href='https://flask-to-do-app-kappa.vercel.app'>Vercel.</a>

@@ -1,4 +1,4 @@
-import os, psycopg2
+import os
 from datetime import date, datetime
 from flask import Flask, render_template, redirect, url_for, flash, request
 from flask_bootstrap import Bootstrap5

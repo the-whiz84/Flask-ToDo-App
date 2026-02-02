@@ -16,7 +16,7 @@ from sqlalchemy import Integer, String, DateTime, func
 from werkzeug.security import generate_password_hash, check_password_hash
 from api.forms import RegisterForm, LoginForm
 
-SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URI")
+SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URI", "sqlite:///todo.db")
 
 
 def due_status(due_date):

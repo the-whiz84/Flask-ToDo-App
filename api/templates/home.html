@@ -1,144 +1,321 @@
-{% include "header.html" %}
-<!-- Page Header -->
-<header class="masthead"
-    style="background-image: url('../static/assets/img/edit-bg.jpg')">
+{% extends "base.html" %}
+{% from "bootstrap5/form.html" import render_form %}
 
-    <body class="bg-dark">
-        <div class="container py-5 h-100">
-            <div
-                class="row d-flex justify-content-center align-items-center h-100">
-                <div class="col-md-12 col-xl-10">
-                    <div class="card mask-custom">
-                        <div class="card-body p-4 text-white">
-                            <div class="text-center pt-3 pb-2">
-                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-todo-list/check1.webp"
-                                    alt="Check" width="60">
-                                <h2 class="my-4">{{ username }}'s To-Do List
-                                </h2>
+{% block content %}
+<div class="task-app-wrapper text-body">
+
+    <!-- Sidebar for Task Lists -->
+    <aside class="task-sidebar">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h5 class="mb-0 fw-bold">My Lists</h5>
+            <button class="btn btn-sm btn-outline-primary rounded-circle"
+                data-bs-toggle="modal" data-bs-target="#addListModal"
+                aria-label="Add List">
+                <i class="fa-solid fa-plus"></i>
+            </button>
+        </div>
+
+        <div
+            class="list-group list-group-flush border-0 bg-transparent flex-grow-1 overflow-y-auto">
+            {% for tl in lists %}
+            <a href="{{ url_for('main.home', list_id=tl.id) }}"
+                class="list-group-item list-group-item-action border-0 rounded-3 mb-1 d-flex align-items-center bg-transparent {% if active_list.id == tl.id %}active shadow-sm{% endif %}">
+                <i
+                    class="fa-solid fa-list-ul me-3 {% if active_list.id != tl.id %}text-secondary{% endif %}"></i>
+                <span class="flex-grow-1 text-truncate fw-medium">{{ tl.name
+                    }}</span>
+            </a>
+            {% endfor %}
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="task-content d-flex flex-column h-100">
+
+        <!-- Mobile Sidebar Toggle-->
+        <div class="d-md-none mb-3">
+            <button class="btn btn-outline-secondary btn-sm rounded-pill px-3"
+                type="button" data-bs-toggle="offcanvas"
+                data-bs-target="#mobileSidebar" aria-controls="mobileSidebar">
+                <i class="fa-solid fa-bars me-2"></i> Show Lists
+            </button>
+        </div>
+
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="fw-bold mb-1">{{ active_list.name }}</h2>
+                <p class="text-secondary mb-0 small">{{ tasks|length }} task{%
+                    if tasks|length != 1 %}s{% endif %}</p>
+            </div>
+
+            <form
+                action="{{ url_for('main.delete_list', list_id=active_list.id) }}"
+                method="POST"
+                onsubmit="return confirm('Are you sure you want to delete this list and all its tasks?');">
+                <input type="hidden" name="csrf_token"
+                    value="{{ csrf_token() }}" />
+                <button type="submit"
+                    class="btn btn-outline-danger btn-sm rounded-circle shadow-sm"
+                    aria-label="Delete List" title="Delete List">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            </form>
+        </div>
+
+        <!-- Add Task Form -->
+        <div class="card border-0 shadow-sm rounded-4 mb-4 glass-panel">
+            <div class="card-body p-3 p-md-4">
+                <form action="{{ url_for('main.add_task') }}" method="POST"
+                    class="row g-2 align-items-center">
+                    {{ task_form.hidden_tag() }}
+                    <div class="col-md-7 col-12">
+                        {{ task_form.task(class="form-control form-control-lg
+                        border-0 bg-body-tertiary", placeholder="What do you
+                        need to do?") }}
+                    </div>
+                    <div class="col-md-3 col-8">
+                        {{ task_form.due_date(class="form-control
+                        form-control-lg border-0 bg-body-tertiary
+                        text-secondary") }}
+                    </div>
+                    <!-- Hidden active list, submit automatically uses it -->
+                    <div class="d-none">
+                        {{ task_form.list_id(class="form-control") }}
+                    </div>
+                    <div class="col-md-2 col-4 d-grid">
+                        <button type="submit"
+                            class="btn btn-primary btn-lg rounded-3 fw-bold shadow-sm">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tasks List -->
+        <div class="flex-grow-1 overflow-y-auto pb-4">
+            {% if tasks %}
+            <ul class="list-unstyled mb-0">
+                {% for todo in tasks %}
+                <li
+                    class="card task-item border-0 mb-3 shadow-sm glass-panel {% if todo.status == 'complete' %}completed{% endif %}">
+                    <div
+                        class="card-body p-3 p-md-4 d-flex align-items-sm-center flex-column flex-sm-row gap-3">
+
+                        <!-- Check Button -->
+                        <form action="{{ url_for('main.update_task') }}"
+                            method="POST" class="mb-0">
+                            <input type="hidden" name="csrf_token"
+                                value="{{ csrf_token() }}" />
+                            <input type="hidden" name="task_id"
+                                value="{{ todo.id }}">
+                            <input type="hidden" name="action" value="complete">
+                            <button type="submit"
+                                class="btn btn-link p-0 text-decoration-none"
+                                aria-label="Toggle Completion">
+                                <i
+                                    class="fa-lg {% if todo.status == 'complete' %}fa-solid fa-circle-check text-success{% else %}fa-regular fa-circle text-secondary{% endif %}"></i>
+                            </button>
+                        </form>
+
+                        <!-- Task Name -->
+                        <div class="flex-grow-1">
+                            <span class="fs-5 fw-medium task-text d-block">{{
+                                todo.task }}</span>
+                        </div>
+
+                        <!-- Status Badge -->
+                        <div class="text-sm-end text-start my-2 my-sm-0">
+                            {% if todo.status == 'complete' %}
+                            <span
+                                class="badge text-bg-success rounded-pill px-3 py-2"><i
+                                    class="fa-solid fa-check me-1"></i>Completed</span>
+                            {% else %}
+                            {% if todo.due_status == 'On time' %}
+                            <span
+                                class="badge text-bg-primary rounded-pill px-3 py-2"><i
+                                    class="fa-solid fa-calendar-day me-1"></i>{{
+                                todo.due_status }}</span>
+                            {% elif todo.due_status == 'Past due' %}
+                            <span
+                                class="badge text-bg-danger rounded-pill px-3 py-2"><i
+                                    class="fa-solid fa-triangle-exclamation me-1"></i>{{
+                                todo.due_status }}</span>
+                            {% elif todo.due_status == 'Due today' %}
+                            <span
+                                class="badge text-bg-warning rounded-pill px-3 py-2"><i
+                                    class="fa-solid fa-clock me-1"></i>{{
+                                todo.due_status }}</span>
+                            {% else %}
+                            <span
+                                class="badge text-bg-secondary rounded-pill px-3 py-2">{{
+                                todo.due_status }}</span>
+                            {% endif %}
+                            {% endif %}
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="d-flex gap-2 ms-sm-2">
+                            <button
+                                class="btn btn-sm btn-outline-primary rounded-circle"
+                                data-bs-toggle="modal"
+                                data-bs-target="#editTaskModal{{ todo.id }}">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            <form action="{{ url_for('main.update_task') }}"
+                                method="POST" class="mb-0">
+                                <input type="hidden" name="csrf_token"
+                                    value="{{ csrf_token() }}" />
+                                <input type="hidden" name="task_id"
+                                    value="{{ todo.id }}">
+                                <input type="hidden" name="action"
+                                    value="delete">
+                                <button type="submit"
+                                    class="btn btn-sm btn-outline-danger rounded-circle">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- Edit Task Modal -->
+                <div class="modal fade" id="editTaskModal{{ todo.id }}"
+                    tabindex="-1"
+                    aria-labelledby="editTaskModalLabel{{ todo.id }}"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div
+                            class="modal-content glass-panel border-0 text-body">
+                            <div
+                                class="modal-header border-bottom border-secondary-subtle">
+                                <h1 class="modal-title fs-5 fw-bold"
+                                    id="editTaskModalLabel{{ todo.id }}">Edit
+                                    Task</h1>
+                                <button type="button" class="btn-close"
+                                    data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
                             </div>
-                            <table class="table text-white mb-0">
-                                <thead>
-                                    <tr>
-                                        <th scope="col"
-                                            class="text-header-custom">Task</th>
-                                        <th scope="col"
-                                            class="text-header-custom">Due
-                                            Status</th>
-                                        <th scope="col"
-                                            class="text-header-custom">Actions
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for todo in todos %}
-                                    <tr
-                                        class="fw-normal {% if todo.status == 'complete' %}text-muted{% endif %}">
-                                        <td
-                                            class="align-middle text-white-custom">
-                                            <span {% if todo.status=='complete'
-                                                %}style="text-decoration: line-through;"
-                                                {% endif %}>{{ todo.task
-                                                }}</span>
-                                        </td>
-                                        <td
-                                            class="align-middle text-white-custom">
-                                            <h6 class="mb-0">
-                                                {% if todo.status == 'complete'
-                                                %}
-                                                <span
-                                                    class="badge bg-success">Completed</span>
-                                                {% else %}
-                                                {% if todo.due_status.lower() ==
-                                                'on time' %}
-                                                <span
-                                                    class="badge bg-primary">{{
-                                                    todo.due_status }}</span>
-                                                {% elif todo.due_status.lower()
-                                                == 'past due' %}
-                                                <span class="badge bg-danger">{{
-                                                    todo.due_status }}</span>
-                                                {% elif todo.due_status.lower()
-                                                == 'due today' %}
-                                                <span
-                                                    class="badge bg-warning">{{
-                                                    todo.due_status }}</span>
-                                                {% else %}
-                                                <span
-                                                    class="badge bg-secondary">Unknown</span>
-                                                {% endif %}
-                                                {% endif %}
-                                            </h6>
-                                        </td>
-                                        <td
-                                            class="align-middle text-white-custom">
-                                            <form action="/update_todo/"
-                                                method="POST"
-                                                style="display:inline;">
-                                                <input type="hidden"
-                                                    name="task_id"
-                                                    value="{{ todo.id }}">
-                                                <button type="submit"
-                                                    name="update_todo"
-                                                    value="complete"
-                                                    class="btn btn-link p-0 m-0">
-                                                    <i
-                                                        class="fas fa-check fa-lg text-success me-3"></i>
-                                                </button>
-                                            </form>
-                                            <form action="/update_todo/"
-                                                method="POST"
-                                                style="display:inline;">
-                                                <input type="hidden"
-                                                    name="task_id"
-                                                    value="{{ todo.id }}">
-                                                <button type="submit"
-                                                    name="update_todo"
-                                                    value="delete"
-                                                    class="btn btn-link p-0 m-0">
-                                                    <i
-                                                        class="fas fa-trash-alt fa-lg text-warning"></i>
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                            <hr
-                                style="height:2px; width:100%; border-width:0; color:grey; background-color:grey">
-                            <div class="pb-5">
-                                <form action='/add_task' method="POST">
-                                    <div class="form-row">
-                                        <div class="col">
-                                            <input class="form-control"
-                                                name="task"
-                                                placeholder="Enter new task here ..."
-                                                type="text">
-                                        </div>
-                                        <div class="col-1 text-center">
-                                            <span
-                                                class="badge badge-primary">Due
-                                                Date</span>
-                                        </div>
-                                        <div class="col-auto">
-                                            <input class="form-control"
-                                                name="due_date" required
-                                                type="date">
-                                        </div>
-                                        <div class="col-1">
-                                            <button
-                                                class="btn btn-sm btn-primary btn-block text-nowrap"
-                                                name="add_todo" type="submit"
-                                                value="add">Add Task</button>
-                                        </div>
+                            <form action="{{ url_for('main.update_task') }}"
+                                method="POST">
+                                <div class="modal-body p-4">
+                                    <input type="hidden" name="csrf_token"
+                                        value="{{ csrf_token() }}" />
+                                    <input type="hidden" name="task_id"
+                                        value="{{ todo.id }}">
+                                    <input type="hidden" name="action"
+                                        value="edit">
+                                    <div class="mb-3">
+                                        <label
+                                            class="form-label text-secondary small fw-bold text-uppercase">Task
+                                            Description</label>
+                                        <input type="text"
+                                            class="form-control form-control-lg"
+                                            name="task_text"
+                                            value="{{ todo.task }}" required>
                                     </div>
-                                </form>
-                            </div>
+                                    <div class="mb-2">
+                                        <label
+                                            class="form-label text-secondary small fw-bold text-uppercase">Due
+                                            Date</label>
+                                        <input type="date"
+                                            class="form-control form-control-lg"
+                                            name="due_date"
+                                            value="{{ todo.due_date.strftime('%Y-%m-%d') }}"
+                                            required>
+                                    </div>
+                                </div>
+                                <div
+                                    class="modal-footer border-top border-secondary-subtle">
+                                    <button type="button"
+                                        class="btn btn-secondary rounded-pill px-4"
+                                        data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit"
+                                        class="btn btn-primary rounded-pill px-4 fw-bold">Save
+                                        Changes</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <div class="text-center py-5">
+                <div class="mb-4">
+                    <i
+                        class="fa-regular fa-face-smile fs-1 text-primary opacity-50"></i>
+                </div>
+                <h4 class="fw-bold text-body">You're all caught up!</h4>
+                <p class="text-secondary">There are no tasks in this list. Add
+                    one above to get started.</p>
             </div>
+            {% endif %}
         </div>
-    </body>
+    </main>
+</div>
 
-    {% include "footer.html" %}
+<!-- Add List Modal -->
+<div class="modal fade" id="addListModal" tabindex="-1"
+    aria-labelledby="addListModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content glass-panel border-0 text-body">
+            <div class="modal-header border-bottom border-secondary-subtle">
+                <h1 class="modal-title fs-5 fw-bold" id="addListModalLabel">
+                    Create New List</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <form action="{{ url_for('main.add_list') }}" method="POST">
+                <div class="modal-body p-4">
+                    {{ list_form.hidden_tag() }}
+                    <div class="mb-2">
+                        <label
+                            class="form-label text-secondary small fw-bold text-uppercase">List
+                            Name</label>
+                        {{ list_form.name(class="form-control form-control-lg",
+                        placeholder="e.g. Groceries, Work Projects") }}
+                    </div>
+                </div>
+                <div class="modal-footer border-top border-secondary-subtle">
+                    <button type="button"
+                        class="btn btn-secondary rounded-pill px-4"
+                        data-bs-dismiss="modal">Cancel</button>
+                    {{ list_form.submit(class="btn btn-primary rounded-pill px-4
+                    fw-bold") }}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Mobile Offcanvas Sidebar -->
+<div class="offcanvas offcanvas-start bg-body" tabindex="-1" id="mobileSidebar"
+    aria-labelledby="mobileSidebarLabel">
+    <div class="offcanvas-header border-bottom border-secondary-subtle">
+        <h5 class="offcanvas-title fw-bold" id="mobileSidebarLabel">My Lists
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
+            aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body p-0">
+        <div class="list-group list-group-flush border-0 rounded-0">
+            {% for tl in lists %}
+            <a href="{{ url_for('main.home', list_id=tl.id) }}"
+                class="list-group-item list-group-item-action border-0 py-3 d-flex align-items-center {% if active_list.id == tl.id %}active{% else %}bg-transparent text-body{% endif %}">
+                <i
+                    class="fa-solid fa-list-ul me-3 {% if active_list.id != tl.id %}text-secondary{% endif %}"></i>
+                <span class="flex-grow-1 fw-medium">{{ tl.name }}</span>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="offcanvas-footer p-3 border-top border-secondary-subtle">
+        <button class="btn btn-outline-primary w-100 rounded-pill fw-bold"
+            data-bs-dismiss="offcanvas" data-bs-toggle="modal"
+            data-bs-target="#addListModal">
+            <i class="fa-solid fa-plus me-2"></i> New List
+        </button>
+    </div>
+</div>
+
+{% endblock %}

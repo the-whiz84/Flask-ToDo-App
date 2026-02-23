@@ -1,32 +1,31 @@
-{% include "header.html" %}
+{% extends "base.html" %}
 
-<!-- Page Header -->
-<header class="masthead"
-    style="background-image: url('../static/assets/img/organizeit.webp')">
-    <div class="container position-relative px-4 px-lg-5">
-        <div class="row gx-4 gx-lg-5 justify-content-center">
-            <div class="col-md-10 col-lg-8 col-xl-7">
-                <div class="site-heading">
-                    <h1>OrganizeIt</h1>
-                    <span class="subheading">Manage your tasks
-                        efficiently</span>
+{% block content %}
+<header class="hero-bg text-center text-white">
+    <div class="hero-overlay"></div>
+    <div class="container position-relative z-1 py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <h1 class="display-3 fw-bold mb-3">OrganizeIt</h1>
+                <p class="lead mb-4 fw-light">A beautiful, seamless way to
+                    manage your tasks across multiple lists. Stay productive, no
+                    matter the theme.</p>
+                {% if current_user.is_authenticated %}
+                <a href="{{ url_for('main.home') }}"
+                    class="btn btn-primary btn-lg px-5 rounded-pill shadow-sm">Go
+                    to Dashboard</a>
+                {% else %}
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="{{ url_for('main.register') }}"
+                        class="btn btn-primary btn-lg px-4 rounded-pill shadow-sm">Get
+                        Started</a>
+                    <a href="{{ url_for('main.login') }}"
+                        class="btn btn-outline-light btn-lg px-4 rounded-pill">Log
+                        In</a>
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>
 </header>
-
-<main class="mb-4">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-md-10 mx-auto">
-                <p>Welcome to the best ToDo app! Please <a
-                        href="{{ url_for('login') }}">login</a> or <a
-                        href="{{ url_for('register') }}">register</a> to start
-                    managing your tasks.</p>
-            </div>
-        </div>
-    </div>
-</main>
-
-{% include "footer.html" %}
+{% endblock %}

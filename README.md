@@ -2,6 +2,8 @@
 
 A modern, beautifully designed productivity application built with Python and Flask. OrganizeIt lets you create, manage, and track tasks across multiple custom lists with a seamless dark/light mode experience.
 
+![OrganizeIt Preview](api/static/assets/img/preview.webp)
+
 ## Features
 
 - **Multiple Task Lists** — Create custom lists and navigate between them using the responsive sidebar

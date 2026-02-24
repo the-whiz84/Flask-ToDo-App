@@ -1,40 +1,80 @@
-# To-Do App using Python and Flask
+# OrganizeIt
 
-## Description
-A simple to-do app built with Python using the Flask framework. The app allows users to create, edit, and manage their tasks. This project is part of my capstone project portfolio based on [100 Days of Code: The Complete Python Pro Bootcamp](https://www.udemy.com/course/100-days-of-code/) by Angela Wu.It is designed to showcase my skills in web development using Flask and various other technologies.
-
-Current functionality only allows user to edit tasks in a single master to do list. For future improvements, I'd consider creating a functionality to manage different to do lists (like a traditional Reminders app) and viewing completed tasks. 
-![Current Version of the App](images/Home_Page.png)
-
-## Table of Contents
-- [Usage](#usage)
-- [Features](#features)
-- [Future Improvements](#future-improvements)
-- [Technologies Used](#technologies-used)
-- [Live Demo](#live-demo)
-
-
-## Usage
-1. Run the app: `python main.py`
-2. Open a web browser and go to `http://127.0.0.1:5000`
-3. You will be greeted with a `Landing Page`![Landing Page](images/Landing_Page.png)
-4. Use `Register` menu to create a user account ![`Register`](images/Register_Page.png) 
-5. You will be redirected to the `Home` page to add Tasks
-6. Existing users can use the `Login` page to log in to their home page ![`Login`](images/Login_Page.png) 
-7. Interact with the app to create, resolve and delete your tasks.
+A modern, beautifully designed productivity application built with Python and Flask. OrganizeIt lets you create, manage, and track tasks across multiple custom lists with a seamless dark/light mode experience.
 
 ## Features
-- Create tasks with descriptions and due dates.
-- Mark tasks as completed (which will also apply a strikethorugh and a `Completed` badge).
-- Delete tasks that you no longer want and they will be removed from the page and database.
 
-## Technologies Used
-- Python
-- Flask
-- HTML
-- SQL-Alchemy
-- WTForms
-- Bootstrap5 (CSS Framework)
+- **Multiple Task Lists** — Create custom lists and navigate between them using the responsive sidebar
+- **Task Management** — Add, edit, complete, and delete tasks with due dates
+- **Dynamic Due Badges** — Automatic status indicators: *Due today*, *On time*, *Past due*
+- **Glassmorphism UI** — Premium design with frosted-glass panels and smooth micro-animations
+- **Persistent Theming** — Dark/Light mode toggle saved to `localStorage`
+- **CSRF Protection** — All forms secured with Flask-WTF CSRF tokens
+- **App Factory Pattern** — Clean architecture using Flask Blueprints
 
-## Live Demo
-Website can be viewed and tested on <a href='https://flask-to-do-app-kappa.vercel.app'>Vercel.</a>
+## Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| Backend | Python 3.14+, Flask, SQLAlchemy ORM |
+| Auth | Flask-Login, Werkzeug password hashing |
+| Forms | Flask-WTF / WTForms with validation |
+| Frontend | HTML5, Vanilla JS, Bootstrap 5.3 |
+| Icons | FontAwesome 6 (CSS Web Fonts) |
+| Styling | Custom CSS with glassmorphism utilities |
+
+## Project Structure
+
+```
+Flask-ToDo-App/
+├── api/
+│   ├── __init__.py        # App factory & extension init
+│   ├── config.py          # Environment-driven configuration
+│   ├── forms.py           # WTForms definitions
+│   ├── main.py            # Application entrypoint
+│   ├── models.py          # SQLAlchemy models (User, TaskList, Task)
+│   ├── routes.py          # Blueprint routes
+│   ├── static/
+│   │   ├── assets/        # Favicon & background images (WebP)
+│   │   ├── css/styles.css # Design system
+│   │   └── js/scripts.js  # Theme toggler
+│   └── templates/         # Jinja2 templates
+├── .env                   # Environment variables (not tracked)
+├── requirements.txt
+└── vercel.json            # Vercel deployment config
+```
+
+## Running Locally
+
+1. **Clone & enter the project:**
+   ```bash
+   git clone https://github.com/the-whiz84/Flask-ToDo-App.git
+   cd Flask-ToDo-App
+   ```
+
+2. **Set up the environment:**
+   ```bash
+   python3 -m venv .venv
+   source .venv/bin/activate
+   pip install -r requirements.txt
+   ```
+
+3. **Configure environment variables:**
+   ```bash
+   cp .env.example .env   # or create manually
+   ```
+   ```env
+   SECRET_KEY=your_secure_secret_here
+   DATABASE_URI=sqlite:///todo.db
+   ```
+
+4. **Run the app:**
+   ```bash
+   python3 api/main.py
+   ```
+
+5. **Open** `http://127.0.0.1:5000` in your browser.
+
+## License
+
+[MIT](LICENSE)

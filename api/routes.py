@@ -202,3 +202,13 @@ def update_task():
         
     flash("Task update failed.", "danger")
     return redirect(url_for("main.home"))
+
+
+@main_bp.route("/privacy")
+def privacy():
+    return render_template("privacy.html")
+
+
+@main_bp.route("/terms")
+def terms():
+    return render_template("terms.html")

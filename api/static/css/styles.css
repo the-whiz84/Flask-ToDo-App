@@ -97,16 +97,16 @@ footer {
 
 /* Hero & Auth Backgrounds */
 .hero-bg {
-  background-image: url('../assets/img/hero-bg.png');
+  background-image: url('../assets/img/hero-bg.webp');
   background-size: cover;
   background-position: center;
   position: relative;
-  min-height: 60vh;
+  min-height: calc(100vh - 56px);
   display: flex;
   align-items: center;
 }
 .auth-bg {
-  background-image: url('../assets/img/auth-bg.png');
+  background-image: url('../assets/img/auth-bg.webp');
   background-size: cover;
   background-position: center;
   position: relative;
@@ -121,5 +121,5 @@ footer {
   background-color: rgba(0, 0, 0, 0.4);
 }
 [data-bs-theme="light"] .hero-overlay {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: transparent;
 }

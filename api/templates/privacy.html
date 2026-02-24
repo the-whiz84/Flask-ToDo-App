@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-5 mt-5 glass-panel rounded-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h1 class="fw-bold mb-4"><i
+                    class="fa-solid fa-shield-halved text-primary me-2"></i>
+                Privacy Policy</h1>
+            <p class="lead text-secondary">Effective Date: February 23, 2026</p>
+
+            <hr class="my-4 border-secondary-subtle">
+
+            <h3 class="fw-bold mt-4">1. Information We Collect</h3>
+            <p>At OrganizeIt, we collect information you provide directly to us
+                when you create an account, such as your username, email
+                address, and encrypted passwords. We also collect the content of
+                the tasks and task lists you create.</p>
+
+            <h3 class="fw-bold mt-4">2. How We Use Your Information</h3>
+            <p>We use the information we collect to operate, maintain, and
+                provide the features and functionality of the OrganizeIt
+                service, as well as to communicate directly with you.</p>
+
+            <h3 class="fw-bold mt-4">3. Data Security</h3>
+            <p>We take security seriously and utilize modern encryption methods
+                (e.g., scrypt hashing for passwords) to protect your personal
+                information against unauthorized access or alteration.</p>
+
+            <h3 class="fw-bold mt-4">4. Sharing of Your Information</h3>
+            <p>We will not rent or sell your information to third parties
+                without your consent, except as noted in this Policy.</p>
+
+            <h3 class="fw-bold mt-4">5. Changes to Our Privacy Policy</h3>
+            <p>OrganizeIt may modify or update this Privacy Policy from time to
+                time, so please review it periodically.</p>
+
+            <div class="mt-5 text-center">
+                <a href="{{ url_for('main.index') }}"
+                    class="btn btn-primary rounded-pill px-4">Return Home</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

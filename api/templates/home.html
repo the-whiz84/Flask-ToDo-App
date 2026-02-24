@@ -65,8 +65,7 @@
                     {{ task_form.hidden_tag() }}
                     <div class="col-md-7 col-12">
                         {{ task_form.task(class="form-control form-control-lg
-                        border-0 bg-body-tertiary", placeholder="What do you
-                        need to do?") }}
+                        border-0 bg-body-tertiary", placeholder="Enter task") }}
                     </div>
                     <div class="col-md-3 col-8">
                         {{ task_form.due_date(class="form-control
@@ -290,14 +289,16 @@
             <div class="modal-header border-bottom border-danger text-danger">
                 <h1 class="modal-title fs-5 fw-bold" id="deleteListModalLabel">
                     <i class="fa-solid fa-triangle-exclamation me-2"></i>Delete
-                    List</h1>
+                    List
+                </h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                     aria-label="Close"></button>
             </div>
             <div class="modal-body p-4">
                 <p class="mb-0">Are you sure you want to delete the list
                     <strong>{{ active_list.name }}</strong> and all of its
-                    tasks? This action cannot be undone.</p>
+                    tasks? This action cannot be undone.
+                </p>
             </div>
             <div class="modal-footer border-top border-secondary-subtle">
                 <button type="button"

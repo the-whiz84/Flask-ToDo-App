@@ -3,13 +3,13 @@
 {% block content %}
 <header class="hero-bg text-center text-white">
     <div class="hero-overlay"></div>
-    <div class="container position-relative z-1 py-5">
+    <div class="container position-relative z-1 py-5 hero-text">
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 <h1 class="display-3 fw-bold mb-3">OrganizeIt</h1>
                 <p class="lead mb-4 fw-light">A beautiful, seamless way to
                     manage your tasks across multiple lists. Stay productive, no
-                    matter the theme.</p>
+                    matter the chore.</p>
                 {% if current_user.is_authenticated %}
                 <a href="{{ url_for('main.home') }}"
                     class="btn btn-primary btn-lg px-5 rounded-pill shadow-sm">Go

@@ -94,11 +94,10 @@
             </button>
           </li>
 
+          {% if not current_user.is_authenticated %}
           <li class="nav-item">
             <a class="nav-link" href="{{ url_for('main.index') }}">Home</a>
           </li>
-
-          {% if not current_user.is_authenticated %}
           <li class="nav-item">
             <a class="nav-link" href="{{ url_for('main.login') }}">Login</a>
           </li>
@@ -128,12 +127,15 @@
   <footer class="bg-body-tertiary border-top py-4 mt-auto">
     <div class="container text-center">
       <div class="d-flex justify-content-center gap-3 mb-3">
-        <a href="https://twitter.com/the_whiz84" class="text-body-secondary"><i
+        <a href="https://twitter.com/the_whiz84" class="text-body-secondary"
+          target="_blank" rel="noopener noreferrer"><i
             class="fa-brands fa-twitter fs-4"></i></a>
         <a href="https://www.linkedin.com/in/radu-chiriac/"
-          class="text-body-secondary"><i
+          class="text-body-secondary" target="_blank"
+          rel="noopener noreferrer"><i
             class="fa-brands fa-linkedin fs-4"></i></a>
-        <a href="https://github.com/the-whiz84" class="text-body-secondary"><i
+        <a href="https://github.com/the-whiz84" class="text-body-secondary"
+          target="_blank" rel="noopener noreferrer"><i
             class="fa-brands fa-github fs-4"></i></a>
       </div>
       <div class="mb-2">
